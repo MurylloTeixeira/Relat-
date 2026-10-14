@@ -46,7 +46,8 @@ jobs:
             pkg-config \
             libncurses5-dev \
             libncursesw5-dev \
-            libssl-dev
+            libssl-dev \
+            openjdk-17-jdk
 
     - name: Instalar Buildozer e Cython
       run: |
@@ -54,9 +55,12 @@ jobs:
         pip install --upgrade cython==0.29.36
         pip install buildozer
 
-    - name: Compilar APK com Buildozer
+    - name: Aceitar Licenças do Android SDK e Compilar
+      env:
+        ACCEPT_SDK_LICENSES: "yes"
       run: |
-        buildozer -v android debug
+        # Aceita licenças de forma não-interativa antes do build
+        yes | buildozer -v android debug
 
     - name: Salvar APK gerado
       uses: actions/upload-artifact@v4
