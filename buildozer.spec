@@ -39,6 +39,9 @@ android.minapi = 24
 # (int) Nível de API alvo (Android 13)
 android.api = 33
 
+# (str) Versão fixa do Android SDK Build Tools
+android.build_tools_version = 33.0.2
+
 [buildozer]
 
 # (int) Nível de log (0 = apenas erros, 2 = debug completo)
