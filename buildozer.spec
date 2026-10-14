@@ -19,7 +19,7 @@ source.dir = .
 version = 1.0.0
 
 # (list) Requisitos da aplicação (Python, Kivy, KivyMD 2.0.0 e bibliotecas adicionais)
-requirements = python3,kivy,kivymd==2.0.0,openpyxl,sqlite3,plyer
+requirements = python3,kivy,kivymd==2.0.0,openpyxl,reportlab,sqlite3,plyer
 
 # (str) Ficheiro do ícone da aplicação (adicione a imagem do ícone como icon.png na raiz do projeto)
 icon.filename = %(source.dir)s/icon.png
