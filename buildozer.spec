@@ -33,11 +33,14 @@ orientation = portrait
 # (list) Arquiteturas suportadas (arm64-v8a cobre praticamente todos os celulares modernos)
 android.archs = arm64-v8a
 
-# (int) Nível de API mínimo suportado (Android 7.0+)
+# (int) Nível de API alvo
+android.api = 33
+
+# (int) Nível de API mínimo
 android.minapi = 24
 
-# (int) Nível de API alvo (Android 13)
-android.api = 33
+# (str) Versão do NDK compatível
+android.ndk = 25b
 
 # (str) Versão fixa do Android SDK Build Tools
 android.build_tools_version = 33.0.2
