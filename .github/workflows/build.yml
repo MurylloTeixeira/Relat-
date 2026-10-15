@@ -55,11 +55,14 @@ jobs:
         pip install --upgrade cython==0.29.36
         pip install --upgrade buildozer
 
+    - name: Limpar Builds Antigos
+      run: |
+        rm -rf .buildozer bin/
+
     - name: Compilar APK com Buildozer
       env:
         ACCEPT_SDK_LICENSES: "yes"
       run: |
-        # Executa o buildozer aceitando licenças automaticamente
         yes | buildozer -v android debug
 
     - name: Salvar APK gerado
