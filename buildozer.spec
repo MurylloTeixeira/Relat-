@@ -33,13 +33,16 @@ orientation = portrait
 # (list) Arquiteturas suportadas (arm64-v8a cobre praticamente todos os celulares modernos)
 android.archs = arm64-v8a
 
-# (int) Nível de API alvo
+# (int) Target Android API, should be as high as possible.
 android.api = 33
 
-# (int) Nível de API mínimo
-android.minapi = 24
+# (int) Minimum API your APK will support.
+android.min_api = 21
 
-# (str) Versão do NDK compatível
+# (str) Android SDK version to use
+android.sdk = 33
+
+# (str) Android NDK version to use
 android.ndk = 25b
 
 # (str) Versão fixa do Android SDK Build Tools
