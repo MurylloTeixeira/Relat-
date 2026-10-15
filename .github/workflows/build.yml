@@ -1,91 +1,60 @@
-name: Compilar APK Android
+name: Build Android APK
 
 on:
   push:
-    branches: [ main, master ]
-  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-    - name: Clonar Repositório
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Configurar Python
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: Instalar Dependências do Sistema
+    - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-            python3-pip \
-            build-essential \
-            git \
-            python3-dev \
-            ffmpeg \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-            libportmidi-dev \
-            libswscale-dev \
-            libavformat-dev \
-            libavcodec-dev \
-            zlib1g-dev \
-            libgstreamer1.0-dev \
-            gstreamer1.0-plugins-base \
-            gstreamer1.0-plugins-good \
-            unzip \
-            zip \
-            autoconf \
-            libtool \
-            pkg-config \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libssl-dev \
-            openjdk-17-jdk \
-            automake \
-            libltdl-dev
+        sudo apt update
+        sudo apt install -y \
+          git \
+          zip \
+          unzip \
+          autoconf \
+          libtool \
+          pkg-config \
+          zlib1g-dev \
+          libncurses5-dev \
+          libncursesw5-dev \
+          libsdl2-dev \
+          libsdl2-image-dev \
+          libsdl2-mixer-dev \
+          libsdl2-ttf-dev \
+          libffi-dev \
+          libssl-dev
 
-    - name: Instalar Buildozer e Cython
+    - name: Install Buildozer and Cython
       run: |
         pip install --upgrade pip
-        pip install --upgrade cython==0.29.36
-        pip install --upgrade buildozer
+        pip install cython==0.29.36 buildozer
 
-    - name: Limpar Cache e Builds Antigos
+    - name: Setup Android SDK Licenses
       run: |
-        rm -rf .buildozer bin/
-        find . -name "*.pyc" -delete
+        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/licenses
+        echo -e "\n24333f8a43b682521c55fb106d951938c4f2b88d" > /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6486e" >> /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > /home/runner/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
 
-    - name: Compilar APK com Buildozer
-      id: compile
-      env:
-        ACCEPT_SDK_LICENSES: "yes"
+    - name: Build with Buildozer
       run: |
-        yes | buildozer -v android debug
+        buildozer -v android debug
 
-    - name: Criar Relatório de Erro se Falhar
-      if: failure()
-      run: |
-        mkdir -p bin
-        echo "====================================================" > bin/ERRO_COMPILACAO.txt
-        echo "          RELATÓRIO DE FALHA NO BUILD - RELATÔ+     " >> bin/ERRO_COMPILACAO.txt
-        echo "====================================================" >> bin/ERRO_COMPILACAO.txt
-        echo "Ocorreu um erro no comando de compilação do Buildozer." >> bin/ERRO_COMPILACAO.txt
-        echo "Causa provável: Incompatibilidade de compilação em C (Clang/NDK) ao processar módulos gráficos do Kivy (svg.o)." >> bin/ERRO_COMPILACAO.txt
-        echo "Data/Hora: $(date)" >> bin/ERRO_COMPILACAO.txt
-        echo "----------------------------------------------------" >> bin/ERRO_COMPILACAO.txt
-        echo "Dica de correção: Tente fixar a versão do Kivy ou remover dependências gráficas avançadas no buildozer.spec." >> bin/ERRO_COMPILACAO.txt
-
-    - name: Salvar Artefactos (APK ou Relatório de Erro)
+    - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
-        name: resultado-compilacao
-        path: |
-          bin/*.apk
-          bin/ERRO_COMPILACAO.txt
+        name: package
+        path: bin/*.apk
