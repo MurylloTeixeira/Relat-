@@ -38,6 +38,9 @@ jobs:
           libssl-dev \
           ant
 
+    - name: Accept Android SDK licenses
+      run: yes | sdkmanager --licenses || true
+
     - name: Install Buildozer, Cython and dependencies
       run: |
         python -m pip install --upgrade pip
