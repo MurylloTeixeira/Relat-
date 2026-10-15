@@ -63,13 +63,29 @@ jobs:
         find . -name "*.pyc" -delete
 
     - name: Compilar APK com Buildozer
+      id: compile
       env:
         ACCEPT_SDK_LICENSES: "yes"
       run: |
         yes | buildozer -v android debug
 
-    - name: Salvar APK gerado
+    - name: Criar Relatório de Erro se Falhar
+      if: failure()
+      run: |
+        mkdir -p bin
+        echo "====================================================" > bin/ERRO_COMPILACAO.txt
+        echo "          RELATÓRIO DE FALHA NO BUILD - RELATÔ+     " >> bin/ERRO_COMPILACAO.txt
+        echo "====================================================" >> bin/ERRO_COMPILACAO.txt
+        echo "Ocorreu um erro no comando de compilação do Buildozer." >> bin/ERRO_COMPILACAO.txt
+        echo "Causa provável: Incompatibilidade de compilação em C (Clang/NDK) ao processar módulos gráficos do Kivy (svg.o)." >> bin/ERRO_COMPILACAO.txt
+        echo "Data/Hora: $(date)" >> bin/ERRO_COMPILACAO.txt
+        echo "----------------------------------------------------" >> bin/ERRO_COMPILACAO.txt
+        echo "Dica de correção: Tente fixar a versão do Kivy ou remover dependências gráficas avançadas no buildozer.spec." >> bin/ERRO_COMPILACAO.txt
+
+    - name: Salvar Artefactos (APK ou Relatório de Erro)
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug-apk
-        path: bin/*.apk
+        name: resultado-compilacao
+        path: |
+          bin/*.apk
+          bin/ERRO_COMPILACAO.txt
