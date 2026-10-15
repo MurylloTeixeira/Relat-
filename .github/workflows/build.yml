@@ -55,9 +55,10 @@ jobs:
         pip install --upgrade cython==0.29.36
         pip install --upgrade buildozer
 
-    - name: Limpar Builds Antigos
+    - name: Limpar Cache e Builds Antigos
       run: |
         rm -rf .buildozer bin/
+        find . -name "*.pyc" -delete
 
     - name: Compilar APK com Buildozer
       env:
