@@ -59,8 +59,9 @@ jobs:
       - name: Build with Buildozer
         run: |
           rm -rf ~/.buildozer
+          export ANDROIDSDKROOT="/usr/local/lib/android/sdk"
+          export ANDROID_HOME="/usr/local/lib/android/sdk"
           buildozer -v android debug
-
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
