@@ -39,7 +39,8 @@ jobs:
           ant
 
     - name: Accept Android SDK licenses
-      run: yes | sdkmanager --licenses || true
+      run: |
+        yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
     - name: Install Buildozer, Cython and dependencies
       run: |
