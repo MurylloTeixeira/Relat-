@@ -23,11 +23,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Configura o Android SDK corretamente sem pacotes obsoletos
+      # Configura apenas o essencial do Android SDK para liberar o ambiente
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: 'platform-tools build-tools;33.0.2 platforms;33'
+          packages: 'platform-tools build-tools;33.0.2'
           accept-android-sdk-licenses: true
 
       - name: Install System Dependencies
