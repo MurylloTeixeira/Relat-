@@ -47,7 +47,9 @@ jobs:
             libncurses5-dev \
             libncursesw5-dev \
             libssl-dev \
-            openjdk-17-jdk
+            openjdk-17-jdk \
+            automake \
+            libltdl-dev
 
     - name: Instalar Buildozer e Cython
       run: |
